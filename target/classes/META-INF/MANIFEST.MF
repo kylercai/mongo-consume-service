@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: mongo-consume-service
+Implementation-Version: 1.0.0-SNAPSHOT
+Built-By: kacai
+Implementation-Vendor-Id: com.msl
+Build-Jdk: 1.8.0_172
+Implementation-URL: http://projects.spring.io/spring-boot/mongo-consum
+ e-service/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
