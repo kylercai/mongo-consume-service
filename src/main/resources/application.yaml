@@ -1,0 +1,23 @@
+spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+    time-zone: GMT+8
+  data:
+    mongodb:
+      uri: mongodb://adp:123456@10.248.37.233:27017/adp-db
+  redis:
+    enable: True
+    ssl: false
+    password:
+    database: 0
+    port: 6379
+    pool:
+      max-idle: 8
+      min-idle: 0
+      max-active: 8
+      max-wait: -1
+    host: 10.248.37.233
+    timeout: 0
+pageSize: 20
+stepCount: 20
