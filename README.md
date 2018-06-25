@@ -38,3 +38,5 @@
 		参数2：接收消息并发数
 		参数3：可选（true/false）。true时打印接收消息的内容（只前30个字节）
 		
+注意事项：
+可能执行会出现找不到加密类的异常，这时把java目录下lib/ext/sunjce_provider.jar 拷贝到 sbtest/ 目录下即可
