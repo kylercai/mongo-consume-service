@@ -6,8 +6,8 @@
 
 1. 用ASB服务的ConnectionString替换代码中的connectionString
 2. 用实际的Queue名称替换代码中相应的队列名
-3. 在eclipse中export项目为“Runnable JAR”，package required libraries，存成本地jar文件，例如“sbtest.jar”
-4. 上传sbtest.jar到Azure虚拟机，加压 sbtest.jar 到目录下，例如 sbtest/
+3. 在eclipse中export项目为“Runnable JAR file”，package required libraries，存成本地jar文件，例如“sbtest.jar”
+4. 上传sbtest.jar到Azure虚拟机，解压 sbtest.jar 到目录下，例如 sbtest/
 5. 进入sbtest目录，在命令行下，使用java命令执行：
     --- 发送消息：
 	    例如： java -Djava.ext.dirs=./ com.msl.mongo.consume.message.sb.ServiceBusMessageSender 1 10240 280000
