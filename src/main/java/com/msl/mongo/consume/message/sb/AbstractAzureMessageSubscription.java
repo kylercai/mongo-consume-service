@@ -53,7 +53,10 @@ public abstract class AbstractAzureMessageSubscription {
                 	long duration = currentTime - startFetchTime;
                 	
                 	if ( printFetch ) {
-                    	System.out.println("Fetched msg=" + new String(iMessage.getBody()).substring(0,  30) + "... count= " + count + ", cost " + duration + " millSec. concurrent="+concurrentcall);
+                		String messageContent = new String(iMessage.getBody());
+						System.out.println("Fetched msg="
+								+ messageContent.substring(0, Math.min(30, messageContent.length()) ) + "... count= "
+								+ count + ", cost " + duration + " millSec. concurrent=" + concurrentcall);
                 	} else {
                     	System.out.println("Fetched msg... count= " + count + ", cost " + duration + " millSec. concurrent="+concurrentcall);
                 	}
