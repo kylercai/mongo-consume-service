@@ -39,4 +39,8 @@
 		参数3：可选（true/false）。true时打印接收消息的内容（只前30个字节）
 		
 注意事项：
-可能执行会出现找不到加密类的异常，这时把java目录下lib/ext/sunjce_provider.jar 拷贝到 sbtest/ 目录下即可
+可能执行会出现找不到加密类的异常:
+java.lang.RuntimeException: java.security.NoSuchAlgorithmException: SunTls12MasterSecret KeyGenerator not available
+这时把java目录下lib/ext/sunjce_provider.jar 拷贝到 sbtest/ 目录下即可，或在执行的命令中指明需要查找sunjce_provider.jar的路径，即类似以下命令：
+java -Djava.ext.dirs=./:/usr/local/jre1.8.0_171/lib/ext  com.msl.mongo.consume.message.sb.ServiceBusMessageSender 1 1024 3
+其中"/usr/local/jre1.8.0_171" 是java的安装路径
