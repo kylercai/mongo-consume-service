@@ -11,6 +11,7 @@
 5. 进入sbtest目录，在命令行下，使用java命令执行：
 
     --- 用Queue方式，同时逐条异步发送消息：
+    
 	    java -Djava.ext.dirs=./ com.msl.mongo.consume.message.sb.ServiceBusMessageSender 1 10240 280000
 		 
 		执行过程控制台打印输出，显示消息发送过程，指定数量的消息发送完后，打印信息显示总发送消息数，以及耗时（单位毫秒），例如：
@@ -27,6 +28,7 @@
 		参数3：发送的消息数，上面的示例命令，发送280000条消息
 
     --- 用Topic方式，同时成批异步发送消息：
+    
 	    java -Djava.ext.dirs=./ com.msl.api.ods.api.AzureTest1
 		 
 		执行过程控制台打印提示，交互输入消息大小和要发送消息数量：
@@ -40,6 +42,7 @@
 		以上输入采用topic方式发送10000条大小为20K的消息，消息成批发送，每批总大小不超过256K字节，每批发送间隔20毫秒（建议间隔不少于20毫秒）。
 		 
     --- 接收消息
+    
 	    java -Djava.ext.dirs=./ com.msl.mongo.consume.message.sb.MongoSubscriberByAzure 1 20
 
 		执行过程控制台打印输出，显示消息接收过程，已接收的消息数和总用时（单位毫秒），例如：
