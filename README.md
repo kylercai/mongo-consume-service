@@ -9,7 +9,8 @@
 3. 在eclipse中export项目为“Runnable JAR file”，package required libraries，存成本地jar文件，例如“sbtest.jar”
 4. 上传sbtest.jar到Azure虚拟机，解压 sbtest.jar 到目录下，例如 sbtest/
 5. 进入sbtest目录，在命令行下，使用java命令执行：
-    --- 用Queue发送消息：
+
+    --- 用Queue方式，同时逐条异步发送消息：
 	    java -Djava.ext.dirs=./ com.msl.mongo.consume.message.sb.ServiceBusMessageSender 1 10240 280000
 		 
 		执行过程控制台打印输出，显示消息发送过程，指定数量的消息发送完后，打印信息显示总发送消息数，以及耗时（单位毫秒），例如：
@@ -25,7 +26,7 @@
 		参数2：消息字节大小，上面的示例命令，使用10K字节的消息
 		参数3：发送的消息数，上面的示例命令，发送280000条消息
 
-    --- 用Topic发送消息：
+    --- 用Topic方式，同时成批异步发送消息：
 	    java -Djava.ext.dirs=./ com.msl.api.ods.api.AzureTest1
 		 
 		执行过程控制台打印提示，交互输入消息大小和要发送消息数量：
@@ -36,7 +37,7 @@
 			10000
 			sendInterval in milliseconds:
 			20
-		以上输入采用topic方式发送10000条大小为20K的消息，消息成批发送，每批总大小不超过256K字节，每批发送间隔20毫秒（间隔不少于20毫秒）。
+		以上输入采用topic方式发送10000条大小为20K的消息，消息成批发送，每批总大小不超过256K字节，每批发送间隔20毫秒（建议间隔不少于20毫秒）。
 		 
     --- 接收消息
 	    java -Djava.ext.dirs=./ com.msl.mongo.consume.message.sb.MongoSubscriberByAzure 1 20
