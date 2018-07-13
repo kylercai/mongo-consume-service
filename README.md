@@ -31,10 +31,12 @@
 		执行过程控制台打印提示，交互输入消息大小和要发送消息数量：
 		[caikai@azconsole sbtest]$ java -Djava.ext.dirs=./ com.msl.api.ods.api.AzureTest1
 			messageSize:
-			20000
+			20480
 			messageCounts:
 			10000
-		以上输入采用topic方式发送10000条大小为20K的消息。
+			sendInterval in milliseconds:
+			20
+		以上输入采用topic方式发送10000条大小为20K的消息，消息成批发送，每批总大小不超过256K字节，每批发送间隔20毫秒（间隔不少于20毫秒）。
 		 
     --- 接收消息
 	    java -Djava.ext.dirs=./ com.msl.mongo.consume.message.sb.MongoSubscriberByAzure 1 20

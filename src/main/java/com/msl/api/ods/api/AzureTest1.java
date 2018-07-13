@@ -1,12 +1,15 @@
 package com.msl.api.ods.api;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.QueueClient;
 import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.TopicClient;
+import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
@@ -18,10 +21,14 @@ public class AzureTest1 {
 		int messageSize = Integer.valueOf(reader.next()) ;
 		System.out.println("messageCounts:");
 		int messageCounts = Integer.valueOf(reader.next());
-		sendMessage(messageSize, messageCounts);
+//		System.out.println("batchSize:");
+//		int batchSize = Integer.valueOf(reader.next());
+		System.out.println("sendInterval in milliseconds:");
+		int sendInterval = Integer.valueOf(reader.next());
+		sendMessage(messageSize, messageCounts, sendInterval);
 	}
 
-	protected static void sendMessage(int messageSize, int messageCounts) {
+	protected static void sendMessage(int messageSize, int messageCounts, int sendInterval) {
 
 		String subscription = "process/subscriptions/process-subscription";
 		//String connectionString = "Endpoint=sb://amasbssit.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=VVxfR6QAwHOchp/HNVxnpkzgnZfJ50UKsSu1qSW0yM0=";
@@ -30,11 +37,12 @@ public class AzureTest1 {
 		//ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(connectionString, subscription);
 		//QueueClient client;
 		TopicClient topicClient;
+		int batchSize = Math.min(100, ClientConstants.MAX_MESSAGE_LENGTH_BYTES / messageSize);
 		
 		try {
 			ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString, "process");
 			Duration timeout = builder.getOperationTimeout();
-			System.out.println("timeout in sec: " + timeout.getSeconds() + "; in nanosec: " + timeout.getNano());
+			//System.out.println("timeout in sec: " + timeout.getSeconds() + "; in nanosec: " + timeout.getNano());
 			topicClient = new TopicClient(builder);
 			//client = new QueueClient(connectionStringBuilder, ReceiveMode.PEEKLOCK);
 			char[] buf = new char[messageSize];
@@ -42,10 +50,20 @@ public class AzureTest1 {
 				buf[i] = '0';
 			}
 			long timeBefore = System.currentTimeMillis();
-			for (int i = 0; i < messageCounts; i++) {
-				Message message = new Message("message " + i + ": " + String.valueOf(buf));
-				topicClient.sendAsync(message);
-				System.out.println("sent message " + i);
+			ArrayList<IMessage> collection = new ArrayList<IMessage>();
+			int looptimes = messageCounts/batchSize;
+			for (int i = 0; i < looptimes; i++) {
+				for ( int j = 0; j<batchSize; j++) {
+					Message message = new Message("message " + i + ": " + String.valueOf(buf));
+					collection.add(message);
+				}
+				topicClient.sendBatchAsync(collection);
+				//topicClient.sendAsync(message);
+				System.out.println("sent message " + new Integer(i*batchSize).toString() + " ~ " + new Integer((i+1)*batchSize-1).toString());
+				if ( sendInterval > 0 ) {
+					Thread.sleep(sendInterval);
+				}
+				collection.clear();
 			}
 			long timeAfter = System.currentTimeMillis();
 			long duration = timeAfter - timeBefore;
